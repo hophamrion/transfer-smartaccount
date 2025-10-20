@@ -7,6 +7,7 @@ networks:
   - name: Event
     address:
     - 0xFf71Ff614d6B621541408Adce546bF68Ad399b5d
+    abi_file_path: abis/TransferEventWrapper.json
     handler: src/EventHandlers.ts
     events:
     - event: BatchTransferExecuted(address indexed smartAccount, uint256 recipientCount, uint256 totalValue, string transferType, address tokenAddress, uint256 timestamp, bytes32 indexed userOpHash)

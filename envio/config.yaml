@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: transferindex
+networks:
+- id: 10143
+  start_block: 0
+  contracts:
+  - name: Entrypoint
+    address:
+    - '0x0000000071727De22E5E9d8BAf0edAc6f37da032'
+    handler: src/EventHandlers.ts
+    events:
+    - event: AccountDeposited(address indexed account, uint256 totalDeposit)
+    - event: AccountWithdrawn(address indexed account, uint256 totalDeposit)
+    - event: Deposited(address indexed paymaster, uint256 oldBalance, uint256 newBalance)
+    - event: UserOperationEvent(bytes32 indexed userOpHash, address indexed sender, address indexed paymaster, uint256 nonce, bool success, uint256 actualGasCost, uint256 actualGasUsed)
+    - event: UserOperationRevertReason(bytes32 indexed userOpHash, address indexed sender, uint256 nonce, bytes revertReason)
+    - event: Withdrawn(address indexed paymaster, uint256 withdrawAmount)
+unordered_multichain_mode: true
+preload_handlers: true

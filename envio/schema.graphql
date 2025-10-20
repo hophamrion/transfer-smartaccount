@@ -1,0 +1,44 @@
+type Entrypoint_AccountDeposited {
+  id: ID!
+  account: String!
+  totalDeposit: BigInt!
+}
+
+type Entrypoint_AccountWithdrawn {
+  id: ID!
+  account: String!
+  totalDeposit: BigInt!
+}
+
+type Entrypoint_Deposited {
+  id: ID!
+  paymaster: String!
+  oldBalance: BigInt!
+  newBalance: BigInt!
+}
+
+type Entrypoint_UserOperationEvent {
+  id: ID!
+  userOpHash: String!
+  sender: String!
+  paymaster: String!
+  nonce: BigInt!
+  success: Boolean!
+  actualGasCost: BigInt!
+  actualGasUsed: BigInt!
+}
+
+type Entrypoint_UserOperationRevertReason {
+  id: ID!
+  userOpHash: String!
+  sender: String!
+  nonce: BigInt!
+  revertReason: String!
+}
+
+type Entrypoint_Withdrawn {
+  id: ID!
+  paymaster: String!
+  withdrawAmount: BigInt!
+}
+

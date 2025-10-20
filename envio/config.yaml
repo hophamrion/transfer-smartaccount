@@ -4,7 +4,7 @@ networks:
 - id: 10143
   start_block: 0
   contracts:
-  - name: event
+  - name: Event
     address:
     - 0xFf71Ff614d6B621541408Adce546bF68Ad399b5d
     handler: src/EventHandlers.ts

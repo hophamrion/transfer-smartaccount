@@ -2,13 +2,13 @@
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
 import {
-  event,
+  Event,
   Event_BatchTransferExecuted,
   Event_TransferExecuted,
   Event_TransferFailed,
 } from "generated";
 
-event.BatchTransferExecuted.handler(async ({ event, context }) => {
+Event.BatchTransferExecuted.handler(async ({ event, context }) => {
   const entity: Event_BatchTransferExecuted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     smartAccount: event.params.smartAccount,
@@ -23,7 +23,7 @@ event.BatchTransferExecuted.handler(async ({ event, context }) => {
   context.Event_BatchTransferExecuted.set(entity);
 });
 
-event.TransferExecuted.handler(async ({ event, context }) => {
+Event.TransferExecuted.handler(async ({ event, context }) => {
   const entity: Event_TransferExecuted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     smartAccount: event.params.smartAccount,
@@ -38,7 +38,7 @@ event.TransferExecuted.handler(async ({ event, context }) => {
   context.Event_TransferExecuted.set(entity);
 });
 
-event.TransferFailed.handler(async ({ event, context }) => {
+Event.TransferFailed.handler(async ({ event, context }) => {
   const entity: Event_TransferFailed = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     smartAccount: event.params.smartAccount,

@@ -25,12 +25,15 @@ const config: HardhatUserConfig = {
       url: process.env.MONAD_RPC_URL!,     // bạn đã xác nhận ở bước #1
       accounts: [process.env.DEPLOY_PK!],  // PK test để deploy token
       chainId: Number(process.env.MONAD_CHAIN_ID || 10143),
+      gas: 5000000, // 5M gas limit
+      gasPrice: 100000000000, // 100 gwei - high gas for deployment
     },
     monadTestnet: {
       url: process.env.MONAD_RPC_URL || "https://testnet.monad.xyz/rpc",
       accounts: process.env.DEPLOY_PK ? [process.env.DEPLOY_PK] : [],
       chainId: 10143,
-      gasPrice: 25000000000, // 25 gwei
+      gas: 5000000, // 5M gas limit
+      gasPrice: 100000000000, // 100 gwei - high gas for deployment
       timeout: 120000, // 2 minutes timeout
       httpHeaders: {
         "Content-Type": "application/json",

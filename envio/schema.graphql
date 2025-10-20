@@ -1,44 +1,34 @@
-type Entrypoint_AccountDeposited {
+type Event_BatchTransferExecuted {
   id: ID!
-  account: String!
-  totalDeposit: BigInt!
-}
-
-type Entrypoint_AccountWithdrawn {
-  id: ID!
-  account: String!
-  totalDeposit: BigInt!
-}
-
-type Entrypoint_Deposited {
-  id: ID!
-  paymaster: String!
-  oldBalance: BigInt!
-  newBalance: BigInt!
-}
-
-type Entrypoint_UserOperationEvent {
-  id: ID!
+  smartAccount: String!
+  recipientCount: BigInt!
+  totalValue: BigInt!
+  transferType: String!
+  tokenAddress: String!
+  timestamp: BigInt!
   userOpHash: String!
-  sender: String!
-  paymaster: String!
-  nonce: BigInt!
-  success: Boolean!
-  actualGasCost: BigInt!
-  actualGasUsed: BigInt!
 }
 
-type Entrypoint_UserOperationRevertReason {
+type Event_TransferExecuted {
   id: ID!
+  smartAccount: String!
+  to: String!
+  value: BigInt!
+  transferType: String!
+  tokenAddress: String!
+  timestamp: BigInt!
   userOpHash: String!
-  sender: String!
-  nonce: BigInt!
-  revertReason: String!
 }
 
-type Entrypoint_Withdrawn {
+type Event_TransferFailed {
   id: ID!
-  paymaster: String!
-  withdrawAmount: BigInt!
+  smartAccount: String!
+  to: String!
+  value: BigInt!
+  transferType: String!
+  tokenAddress: String!
+  reason: String!
+  timestamp: BigInt!
+  userOpHash: String!
 }
 

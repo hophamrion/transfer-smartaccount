@@ -1,12 +1,14 @@
 /*
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
+import {
+  Smart,
+  Smart_BatchTransferExecuted,
+  Smart_TransferExecuted,
+} from "generated";
 
-export const handleBatchTransferExecuted = async ({
-  event,
-  context,
-}: any) => {
-  const entity = {
+Smart.BatchTransferExecuted.handler(async ({ event, context }) => {
+  const entity: Smart_BatchTransferExecuted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     smartAccount: event.params.smartAccount,
     recipientCount: event.params.recipientCount,
@@ -17,14 +19,11 @@ export const handleBatchTransferExecuted = async ({
     userOpHash: event.params.userOpHash,
   };
 
-  context.Event_BatchTransferExecuted.set(entity);
-};
+  context.Smart_BatchTransferExecuted.set(entity);
+});
 
-export const handleTransferExecuted = async ({
-  event,
-  context,
-}: any) => {
-  const entity = {
+Smart.TransferExecuted.handler(async ({ event, context }) => {
+  const entity: Smart_TransferExecuted = {
     id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
     smartAccount: event.params.smartAccount,
     to: event.params.to,
@@ -35,24 +34,5 @@ export const handleTransferExecuted = async ({
     userOpHash: event.params.userOpHash,
   };
 
-  context.Event_TransferExecuted.set(entity);
-};
-
-export const handleTransferFailed = async ({
-  event,
-  context,
-}: any) => {
-  const entity = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    smartAccount: event.params.smartAccount,
-    to: event.params.to,
-    value: event.params.value,
-    transferType: event.params.transferType,
-    tokenAddress: event.params.tokenAddress,
-    reason: event.params.reason,
-    timestamp: event.params.timestamp,
-    userOpHash: event.params.userOpHash,
-  };
-
-  context.Event_TransferFailed.set(entity);
-};
+  context.Smart_TransferExecuted.set(entity);
+});

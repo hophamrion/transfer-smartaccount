@@ -1,4 +1,4 @@
-type Event_BatchTransferExecuted {
+type Smart_BatchTransferExecuted {
   id: ID!
   smartAccount: String!
   recipientCount: BigInt!
@@ -9,25 +9,13 @@ type Event_BatchTransferExecuted {
   userOpHash: String!
 }
 
-type Event_TransferExecuted {
+type Smart_TransferExecuted {
   id: ID!
   smartAccount: String!
   to: String!
   value: BigInt!
   transferType: String!
   tokenAddress: String!
-  timestamp: BigInt!
-  userOpHash: String!
-}
-
-type Event_TransferFailed {
-  id: ID!
-  smartAccount: String!
-  to: String!
-  value: BigInt!
-  transferType: String!
-  tokenAddress: String!
-  reason: String!
   timestamp: BigInt!
   userOpHash: String!
 }

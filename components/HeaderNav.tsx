@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { useMetaMask } from './MetaMaskProvider';
-import { useSidebar } from './SidebarLayout';
 
 type NavLink = {
   href: string;
@@ -18,7 +18,7 @@ function formatAddress(address: string) {
 export default function HeaderNav({ links }: { links: NavLink[] }) {
   const { account, isConnecting, connect, disconnect, error, clearError } = useMetaMask();
   const pathname = usePathname();
-  const { collapsed, setCollapsed } = useSidebar();
+  const [collapsed, setCollapsed] = useState(false);
 
   const connectHandler = async () => {
     clearError();

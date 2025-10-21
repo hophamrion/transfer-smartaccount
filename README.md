@@ -1,326 +1,253 @@
-# 💸 MON Transfer Platform
+# MON Transfer Platform
 
-A decentralized token transfer platform built on **Monad Testnet** that enables users to send MON and ERC-20 tokens with Smart Accounts and ERC-4337 Account Abstraction.
+A modern, decentralized token transfer platform built on the Monad blockchain, featuring ERC-4337 Smart Account integration and real-time transaction indexing with Envio.
 
-## 🌟 Features
+🌐 **Live Demo:** [https://transfer-smartaccount.vercel.app/](https://transfer-smartaccount.vercel.app/)
 
-- **💸 Token Transfers** - Send native MON and any ERC-20 token
-- **📦 Batch Transfers** - Send to multiple recipients in one transaction
-- **⚡ Smart Account Integration** - ERC-4337 with Pimlico bundler for gasless transactions
-- **📖 Address Book** - Save and manage frequently used addresses
-- **📊 Real-time Analytics** - Envio indexer for on-chain data and transaction history
-- **🦊 MetaMask Support** - Seamless wallet connection with delegation toolkit
-- **🌐 Multi-Token** - Support for native MON and any ERC-20 standard token
+## 🚀 Features
 
-## 🌐 Live Application
+### 🔐 Smart Account Integration
+- **ERC-4337 Account Abstraction**: Deploy and manage Smart Accounts for gasless transactions
+- **Pimlico Bundler Integration**: Seamless transaction processing through Pimlico's infrastructure
+- **MetaMask Delegation Toolkit**: Easy wallet connection and account management
+- **Automatic Deployment**: One-click Smart Account deployment with status monitoring
 
-**🚀 Platform URL**: [https://mon-stake.vercel.app/](https://mon-stake.vercel.app/)
+### 💸 Advanced Transfer Capabilities
+- **Native Token Transfers**: Send MON tokens directly with Smart Account integration
+- **ERC-20 Token Support**: Transfer any ERC-20 token with automatic token detection
+- **Batch Transfers**: Send tokens to multiple recipients in a single transaction
+- **Gas Optimization**: Reduced gas fees through batch processing and Smart Account abstraction
 
-The MON Transfer Platform is live and fully operational on Vercel. Connect your MetaMask wallet and start transferring immediately!
+### 📊 Real-time Transaction Monitoring
+- **Envio Indexing**: Real-time blockchain data indexing and querying
+- **Transfer History**: Comprehensive transaction history with filtering and search
+- **Transaction Analytics**: Sent/received statistics and net balance tracking
+- **GraphQL API**: Efficient data querying through Envio's GraphQL endpoint
 
-## 📋 Network Information
+### 🎨 Modern User Interface
+- **Dark Theme Design**: Professional dark interface with glass morphism effects
+- **Responsive Layout**: Optimized for desktop and mobile devices
+- **Sidebar Navigation**: Collapsible sidebar with smooth transitions
+- **Progress Indicators**: Visual step-by-step guidance for complex operations
+- **Animated Components**: Subtle animations and hover effects for enhanced UX
 
-### Monad Testnet
+## 🏗️ Technical Architecture
 
-| Info | Value |
-|------|-------|
-| **Network Name** | Monad Testnet |
-| **Chain ID** | 10143 |
-| **RPC URL** | https://rpc.ankr.com/monad_testnet |
-| **Explorer** | https://testnet.monadexplorer.com/ |
-| **Smart Account Factory** | `0x69Aa2f9fe1572F1B640E1bbc512f5c3a734fc77c` |
+### Frontend
+- **Framework**: Next.js 14 with TypeScript
+- **Styling**: Tailwind CSS with custom CSS variables
+- **State Management**: React hooks and context providers
+- **Wallet Integration**: MetaMask with custom provider wrapper
+
+### Blockchain Integration
+- **Network**: Monad Testnet (Chain ID: 10143)
+- **Smart Contracts**: ERC-4337 EntryPoint and custom TransferEventWrapper
+- **Libraries**: Viem for blockchain interactions
+- **Bundler**: Pimlico for UserOperation processing
+
+### Data Indexing
+- **Envio Indexer**: Real-time blockchain event indexing
+- **GraphQL API**: Query interface for transaction data
+- **Event Wrapper**: Custom contract for emitting transfer events
+- **Database**: PostgreSQL with Envio's managed infrastructure
+
+## 📋 Smart Contract Addresses
+
+### TransferEventWrapper Contract
+```
+Address: 0xFf71Ff614d6B621541408Adce546bF68Ad399b5d
+Network: Monad Testnet
+Purpose: Emit standardized events for transfer operations
+```
+
+### ERC-4337 EntryPoint
+```
+Address: 0x0000000071727De22E5E9d8BAf0edAc6f37da032
+Network: Monad Testnet
+Purpose: ERC-4337 Account Abstraction entry point
+```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-
-- Node.js 18+
+- Node.js 18+ 
 - MetaMask wallet
 - MON tokens on Monad Testnet
 
 ### Installation
 
+1. **Clone the repository**
 ```bash
-# Clone the repository
-git clone <your-repo-url>
-cd mon-transfer
+git clone https://github.com/your-username/mon-metamask-envio.git
+cd mon-metamask-envio
+```
 
-# Install dependencies
+2. **Install dependencies**
+```bash
 npm install
+```
 
-# Copy environment file
+3. **Environment setup**
+```bash
 cp env.example .env.local
+```
 
-# Configure environment variables
-# Add your Pimlico API key and other settings
+4. **Configure environment variables**
+```env
+NEXT_PUBLIC_PIMLICO_API_KEY=your_pimlico_api_key
+NEXT_PUBLIC_CHAIN_ID=10143
+NEXT_PUBLIC_MONAD_RPC_URL=https://testnet-rpc.monad.xyz
+NEXT_PUBLIC_MONAD_CHAIN_ID=10143
+NEXT_PUBLIC_ENVIO_API_URL=https://indexer.dev.hyperindex.xyz/2466180/v1/graphql
+NEXT_PUBLIC_TRANSFER_EVENT_WRAPPER=0xFf71Ff614d6B621541408Adce546bF68Ad399b5d
+```
 
-# Run development server
+5. **Run development server**
+```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` to see the app.
-
-## 📋 Environment Variables
-
-Create a `.env.local` file with:
-
-```env
-# DEFAULT CHAIN
-NEXT_PUBLIC_CHAIN_ID=10143
-
-# MONAD TESTNET
-MONAD_RPC_URL=https://rpc.ankr.com/monad_testnet
-MONAD_CHAIN_ID=10143
-
-# AA / PAYMASTER / BUNDLER (Pimlico)
-NEXT_PUBLIC_PIMLICO_API_KEY=your_pimlico_api_key_here
-
-# ENVIO (GraphQL Endpoint)
-NEXT_PUBLIC_ENVIO_API_URL=your_envio_graphql_endpoint
+6. **Open in browser**
+```
+http://localhost:3000
 ```
 
-## 📖 How to Use
+## 📱 User Journey
 
-### 1. Connect Wallet
-- Click "Connect Wallet" button
-- Approve the connection
-- MetaMask will automatically switch to Monad Testnet
+### 1. Wallet Connection
+- Connect MetaMask wallet
+- Automatic network switching to Monad Testnet
+- Account verification and balance checking
 
-### 2. Deploy Smart Account (Optional)
-- Go to `/deploy` page
-- Click "Deploy Smart Account" for ERC-4337 support
-- Approve the deployment transaction
-- Fund your Smart Account with MON for gas
+### 2. Smart Account Setup
+- Deploy Smart Account (one-time setup)
+- Fund Smart Account with MON tokens for gas fees
+- Verify deployment status and balance
 
-### 3. Simple Transfer
-- Navigate to `/transfer` page
-- Select "Simple Transfer" tab
-- Choose transfer type (Native MON or ERC-20)
-- Enter recipient address and amount
-- Click "Send Transfer"
-- Confirm transaction in MetaMask
+### 3. Token Transfers
+- **Simple Transfer**: Send tokens to a single recipient
+- **Batch Transfer**: Send tokens to multiple recipients simultaneously
+- **Token Selection**: Choose between native MON or any ERC-20 token
 
-### 4. Batch Transfer
-- Go to "Batch Transfer" tab
-- Add multiple recipients manually or import from CSV
-- Review total amount
-- Click "Send to X Recipients"
-- All transfers execute in one transaction
+### 4. Transaction Monitoring
+- View real-time transfer history
+- Track sent/received amounts and net balance
+- Monitor transaction status and confirmations
 
-### 5. Address Book
-- Go to "Address Book" tab
-- Add frequently used addresses with labels
-- Click ✅ icon to use address in transfer forms
-- Manage saved addresses easily
+## 🔧 Smart Contract Architecture
 
-### 6. Monitor Dashboard
-- Go to `/dashboard` to view:
-  - Current balance
-  - Smart Account address
-  - Network information
-  - Transfer history from Envio
-  - Total sent and received amounts
+### TransferEventWrapper Contract
+A dedicated smart contract that emits standardized events for all transfer operations:
 
-## 🏗️ Project Structure
-
-```
-mon-transfer/
-├── app/
-│   ├── page.tsx                # Landing page
-│   ├── transfer/               # Transfer interface
-│   ├── dashboard/              # Dashboard with analytics
-│   ├── deploy/                 # Smart Account deployment
-│   └── layout.tsx              # Root layout
-├── components/
-│   ├── TransferForm.tsx        # Simple transfer UI
-│   ├── BatchTransfer.tsx       # Batch transfer UI
-│   ├── AddressBook.tsx         # Address management
-│   ├── TransferHistory.tsx     # Envio integration
-│   ├── MetaMaskProvider.tsx    # Wallet & Smart Account provider
-│   ├── SmartAccountDeploy.tsx  # Deployment interface
-│   └── HeaderNav.tsx           # Navigation
-├── lib/
-│   ├── transfer.ts             # Transfer logic with ERC-4337
-│   ├── smartAccount-deploy.ts  # Smart Account creation
-│   ├── chain.ts                # Network configurations
-│   ├── clients.ts              # Viem clients
-│   └── network.ts              # Network utilities
-└── mon/
-    └── generated/              # Envio indexer
+```solidity
+contract TransferEventWrapper {
+    event TransferExecuted(
+        address indexed smartAccount,
+        address indexed to,
+        uint256 value,
+        string transferType,
+        address tokenAddress,
+        uint256 timestamp,
+        bytes32 indexed userOpHash
+    );
+    
+    event BatchTransferExecuted(
+        address indexed smartAccount,
+        uint256 recipientCount,
+        uint256 totalValue,
+        string transferType,
+        address tokenAddress,
+        uint256 timestamp,
+        bytes32 indexed userOpHash
+    );
+}
 ```
 
-## 🛠️ Tech Stack
+## 🌐 Network Information
 
-### Frontend
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: TailwindCSS
-- **State Management**: React Context
+- **Network Name**: Monad Testnet
+- **Chain ID**: 10143
+- **RPC URL**: https://testnet-rpc.monad.xyz
+- **Explorer**: https://testnet.monadexplorer.com
+- **Currency**: MON (native token)
 
-### Blockchain
-- **Network**: Monad Testnet (Chain ID: 10143)
-- **Library**: Viem 2.x
-- **Smart Accounts**: MetaMask Delegation Toolkit
-- **Account Abstraction**: ERC-4337
-- **Bundler**: Pimlico
+## 🔒 Security Features
 
-### Indexing & Data
-- **Indexer**: Envio
-- **Query**: GraphQL
-- **Real-time**: WebSocket support
+- **Smart Account Validation**: Verify account deployment before operations
+- **Transaction Validation**: Check balances and token allowances
+- **Error Handling**: Comprehensive error messages and fallback mechanisms
+- **Type Safety**: Full TypeScript implementation for compile-time safety
 
-## 📄 Key Functions
+## ⚡ Performance Optimizations
 
-### Native Transfer
-```typescript
-await transferNative(smartAccount, recipientAddress, amount);
+- **Batch Operations**: Reduce gas costs through batch transfers
+- **Smart Caching**: Efficient data fetching with React Query patterns
+- **Lazy Loading**: Component-level code splitting
+- **Optimized Queries**: Efficient GraphQL queries with proper filtering
+
+## 🛠️ Development
+
+### Project Structure
+```
+├── app/                    # Next.js app directory
+│   ├── dashboard/         # Dashboard page
+│   ├── deploy/           # Smart Account deployment
+│   ├── transfer/         # Transfer functionality
+│   └── page.tsx          # Home page
+├── components/           # React components
+│   ├── HeaderNav.tsx     # Navigation sidebar
+│   ├── MetaMaskProvider.tsx # Wallet provider
+│   ├── SmartAccountDeploy.tsx # Account deployment
+│   ├── FundSmartAccount.tsx # Account funding
+│   ├── TransferForm.tsx  # Single transfer form
+│   ├── BatchTransfer.tsx # Batch transfer form
+│   └── TransferHistory.tsx # Transaction history
+├── lib/                  # Utility functions
+│   ├── transfer.ts       # Transfer logic
+│   ├── smartAccount-deploy.ts # Account deployment
+│   ├── chain.ts          # Chain configuration
+│   ├── clients.ts        # Blockchain clients
+│   └── network.ts        # Network utilities
+├── envio/               # Envio indexer configuration
+│   ├── config.yaml      # Indexer configuration
+│   ├── schema.graphql   # GraphQL schema
+│   └── src/EventHandlers.ts # Event handlers
+└── public/              # Static assets
+    └── logo.png         # Platform logo
 ```
 
-### ERC-20 Transfer
-```typescript
-await transferERC20(smartAccount, tokenAddress, recipientAddress, amount);
-```
-
-### Batch Transfer
-```typescript
-const recipients = [
-  { address: '0x...', amount: parseEther('1.0') },
-  { address: '0x...', amount: parseEther('2.0') }
-];
-await batchTransfer(smartAccount, recipients, true); // true for native MON
-```
-
-### Get Token Info
-```typescript
-const info = await getTokenInfo(tokenAddress, userAddress);
-// Returns: { address, name, symbol, decimals, balance }
-```
-
-## 💡 Innovation Highlights
-
-### 1. ERC-4337 Account Abstraction
-First transfer platform on Monad to implement full account abstraction with:
-- Smart Account deployment via factory
-- User operations via Pimlico bundler
-- Gasless transactions support
-- Batch operations capability
-
-### 2. MetaMask Delegation Toolkit
-Integration with MetaMask's official delegation toolkit:
-- Hybrid implementation (EOA + Passkey)
-- Deterministic address generation
-- Counterfactual account support
-
-### 3. Batch Transfers
-Save gas and time by sending to multiple recipients:
-- Single transaction for multiple transfers
-- CSV import for convenience
-- Atomic execution (all succeed or all fail)
-
-### 4. Address Book
-User-friendly address management:
-- Save addresses with labels and notes
-- Local storage (privacy-focused)
-- Quick access for repeated transfers
-
-### 5. Envio Indexer Integration
-Real-time on-chain data with GraphQL:
-- Transfer history (sent & received)
-- Aggregate statistics
-- User analytics
-- Transaction tracking
-
-## 🧪 Testing
-
+### Available Scripts
 ```bash
-# Run all tests
-npm test
-
-# Run unit tests
-npm run test:unit
-
-# Run integration tests
-npm run test:integration
-
-# Test with coverage
-npm run test:coverage
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run start        # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # Run TypeScript checks
 ```
 
-## 🌐 Deployment
+## 🚀 Deployment
 
-### Frontend (Vercel)
+### Vercel (Recommended)
+1. Connect GitHub repository to Vercel
+2. Configure environment variables in Vercel dashboard
+3. Deploy with automatic CI/CD
 
+### Manual Deployment
 ```bash
-# Build for production
 npm run build
-
-# Deploy to Vercel
-vercel --prod
-
-# Set environment variables in Vercel dashboard
+npm run start
 ```
 
-## 📊 Transfer Features
+## 📊 Envio Indexer Setup
 
-### Simple Transfer
-- Native MON transfers
-- ERC-20 token transfers
-- Address validation
-- Balance checking
-- Transaction confirmation
+The platform uses Envio for real-time blockchain indexing:
 
-### Batch Transfer
-- Multiple recipients in one transaction
-- CSV import support
-- Total amount calculation
-- Individual amount specification
-- Gas optimization
-
-### Address Book
-- Save unlimited addresses
-- Add labels and notes
-- Local storage (private)
-- Quick copy to clipboard
-- One-click use in transfers
-
-## 🔐 Security Considerations
-
-- **Smart Accounts**: Non-custodial, you control your keys
-- **Private Keys**: Never exposed in frontend or commits
-- **RPC Endpoints**: Use reputable providers (Ankr)
-- **User Permissions**: Explicit approval for all transactions
-- **Gas Estimation**: Dynamic calculation based on network
-- **Address Validation**: Input validation before transfer
-
-## 📝 Development Roadmap
-
-### ✅ Phase 1 - MVP (Completed)
-- [x] Transfer logic (native + ERC-20)
-- [x] Smart Account support (ERC-4337)
-- [x] Batch transfer functionality
-- [x] Address book
-- [x] Dashboard UI
-- [x] MetaMask integration
-- [x] Envio indexer integration
-
-### 🔄 Phase 2 - Enhancement (In Progress)
-- [x] Pimlico bundler integration
-- [x] Real-time transfer history
-- [ ] Mobile responsive design improvements
-- [ ] Gas optimization for user operations
-- [ ] Paymaster integration for sponsored transactions
-
-### 🚀 Phase 3 - Advanced (Planned)
-- [ ] NFT transfer support
-- [ ] Multi-chain support
-- [ ] Scheduled transfers
-- [ ] Recurring payments
-- [ ] QR code generation for addresses
-- [ ] Transaction receipts with PDF export
+1. **Contract Events**: TransferEventWrapper contract events
+2. **GraphQL Endpoint**: https://indexer.dev.hyperindex.xyz/2466180/v1/graphql
+3. **Real-time Updates**: Automatic transaction indexing
+4. **Query Interface**: GraphQL for efficient data fetching
 
 ## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -328,31 +255,26 @@ We welcome contributions! Please follow these steps:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 🆘 Support & Resources
-
-- **Live Platform**: [https://mon-stake.vercel.app/](https://mon-stake.vercel.app/)
-- **Documentation**: Check `/docs` folder for detailed guides
-- **Monad Docs**: https://docs.monad.xyz
-- **MetaMask Delegation**: https://docs.metamask.io/delegation-toolkit
-- **Envio Docs**: https://docs.envio.dev
-- **Pimlico Docs**: https://docs.pimlico.io
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🎉 Acknowledgments
+## 🔗 Links
 
-- **Monad Labs** - For testnet infrastructure and support
-- **MetaMask** - For delegation toolkit and Smart Account framework
-- **Pimlico** - For bundler infrastructure
-- **Envio** - For indexing services
-- **Community** - All contributors and testers
+- **Live Demo**: [https://transfer-smartaccount.vercel.app/](https://transfer-smartaccount.vercel.app/)
+- **Monad Testnet Explorer**: [https://testnet.monadexplorer.com](https://testnet.monadexplorer.com)
+- **Pimlico Documentation**: [https://docs.pimlico.io](https://docs.pimlico.io)
+- **Envio Documentation**: [https://docs.envio.dev](https://docs.envio.dev)
+- **ERC-4337 Specification**: [https://eips.ethereum.org/EIPS/eip-4337](https://eips.ethereum.org/EIPS/eip-4337)
+
+## 🙏 Acknowledgments
+
+- **Monad**: For the testnet infrastructure
+- **Pimlico**: For bundler services
+- **Envio**: For blockchain indexing
+- **ERC-4337**: For Account Abstraction standard
+- **Viem**: For Ethereum library
 
 ---
 
-**Built with ❤️ on Monad Testnet**
-
-**🚀 Live Platform**: [https://mon-stake.vercel.app/](https://mon-stake.vercel.app/)
-
-**💸 Transfer tokens the smart way with ERC-4337!**
+**Built for the Monad ecosystem** • **Powered by ERC-4337** • **Indexed by Envio**

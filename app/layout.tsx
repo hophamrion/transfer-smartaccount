@@ -1,8 +1,6 @@
 ﻿import "./globals.css";
 import HeaderNav from "@/components/HeaderNav";
 import { MetaMaskProvider } from "@/components/MetaMaskProvider";
-import { SidebarProvider } from "@/components/SidebarLayout";
-import MainContent from "@/components/MainContent";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -20,10 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{ margin: 0, padding: 0, minHeight: '100vh', display: 'flex' }}>
         <MetaMaskProvider>
-          <SidebarProvider>
-            <HeaderNav links={NAV_LINKS} />
-            <MainContent>
-              <main style={{ flex: 1 }}>{children}</main>
+          <HeaderNav links={NAV_LINKS} />
+          <main style={{ flex: 1, marginLeft: '280px' }}>{children}</main>
           <footer style={{
             marginTop: '4rem',
             padding: '3rem 2rem',
@@ -52,8 +48,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
           </footer>
-            </MainContent>
-          </SidebarProvider>
         </MetaMaskProvider>
       </body>
     </html>

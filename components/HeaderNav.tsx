@@ -79,7 +79,10 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                   onError={(e) => {
                     // Fallback to SVG if logo.png fails to load
                     e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                    const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                    if (nextElement) {
+                      nextElement.style.display = 'flex';
+                    }
                   }}
                 />
                 <div style={{
@@ -142,7 +145,10 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                 onError={(e) => {
                   // Fallback to SVG if logo.png fails to load
                   e.currentTarget.style.display = 'none';
-                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                  const nextElement = e.currentTarget.nextElementSibling as HTMLElement;
+                  if (nextElement) {
+                    nextElement.style.display = 'flex';
+                  }
                 }}
               />
               <div style={{

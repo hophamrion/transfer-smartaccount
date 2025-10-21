@@ -3,6 +3,49 @@ import { createBundlerClient } from 'viem/account-abstraction';
 import { publicClient } from './clients';
 import type { SmartAccount } from './smartAccount-deploy';
 
+// TransferEventWrapper contract address
+const TRANSFER_EVENT_WRAPPER_ADDRESS = (process.env.NEXT_PUBLIC_TRANSFER_EVENT_WRAPPER || '0xFf71Ff614d6B621541408Adce546bF68Ad399b5d') as Address;
+
+// TransferEventWrapper ABI
+const TRANSFER_EVENT_WRAPPER_ABI = [
+  {
+    name: 'emitNativeTransferEvent',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'userOpHash', type: 'bytes32' }
+    ],
+    outputs: []
+  },
+  {
+    name: 'emitERC20TransferEvent',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'token', type: 'address' },
+      { name: 'to', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'userOpHash', type: 'bytes32' }
+    ],
+    outputs: []
+  },
+  {
+    name: 'emitBatchTransferEvent',
+    type: 'function',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'recipients', type: 'address[]' },
+      { name: 'values', type: 'uint256[]' },
+      { name: 'transferType', type: 'string' },
+      { name: 'tokenAddress', type: 'address' },
+      { name: 'userOpHash', type: 'bytes32' }
+    ],
+    outputs: []
+  }
+] as const;
+
 // Get bundler URL with API key
 function getBundlerUrl(): string {
   const apiKey = process.env.NEXT_PUBLIC_PIMLICO_API_KEY;
@@ -196,7 +239,7 @@ export async function transferNative(
       
       console.log('📋 Sending UserOp via bundlerClient...');
       
-      // Send user operation
+      // Send user operation with transfer + event emission
       const userOperationHash = await bundlerClient.sendUserOperation({
         account: smartAccount.implementation,
         calls: [
@@ -204,6 +247,16 @@ export async function transferNative(
             to: to,
             value: amount,
             data: '0x' as `0x${string}`, // Empty data for native transfer
+          },
+          // Emit transfer event for Envio indexing
+          {
+            to: TRANSFER_EVENT_WRAPPER_ADDRESS,
+            value: 0n,
+            data: encodeFunctionData({
+              abi: TRANSFER_EVENT_WRAPPER_ABI,
+              functionName: 'emitNativeTransferEvent',
+              args: [to, amount, '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`] // Placeholder hash
+            }),
           },
         ],
         maxFeePerGas,
@@ -283,7 +336,7 @@ export async function transferERC20(
       
       console.log('📋 Sending ERC-20 transfer UserOp...');
       
-      // Send user operation
+      // Send user operation with transfer + event emission
       const userOperationHash = await bundlerClient.sendUserOperation({
         account: smartAccount.implementation,
         calls: [
@@ -291,6 +344,16 @@ export async function transferERC20(
             to: tokenAddress,
             value: 0n,
             data: transferCallData,
+          },
+          // Emit transfer event for Envio indexing
+          {
+            to: TRANSFER_EVENT_WRAPPER_ADDRESS,
+            value: 0n,
+            data: encodeFunctionData({
+              abi: TRANSFER_EVENT_WRAPPER_ABI,
+              functionName: 'emitERC20TransferEvent',
+              args: [tokenAddress, to, amount, '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`] // Placeholder hash
+            }),
           },
         ],
         maxFeePerGas,
@@ -394,13 +457,33 @@ export async function batchTransfer(
         };
       }
     });
+
+    // Add batch transfer event emission
+    const allCalls = [
+      ...calls,
+      {
+        to: TRANSFER_EVENT_WRAPPER_ADDRESS,
+        value: 0n,
+        data: encodeFunctionData({
+          abi: TRANSFER_EVENT_WRAPPER_ABI,
+          functionName: 'emitBatchTransferEvent',
+          args: [
+            recipients.map(r => r.address),
+            recipients.map(r => r.amount),
+            isNative ? 'native' : 'erc20',
+            isNative ? '0x0000000000000000000000000000000000000000' as Address : tokenAddress!,
+            '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}` // Placeholder hash
+          ]
+        }),
+      }
+    ];
     
-    console.log('📋 Sending batch UserOp with', calls.length, 'calls...');
+    console.log('📋 Sending batch UserOp with', allCalls.length, 'calls...');
     
     // Send batch user operation
     const userOperationHash = await bundlerClient.sendUserOperation({
       account: smartAccount.implementation,
-      calls: calls,
+      calls: allCalls,
       maxFeePerGas,
       maxPriorityFeePerGas,
     });

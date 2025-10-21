@@ -51,24 +51,6 @@ export default function TransferPage() {
         </p>
       </div>
 
-      {/* Smart Account Notice */}
-      <div style={{ 
-        marginBottom: '2rem',
-        padding: '1.5rem',
-        background: 'rgba(59, 130, 246, 0.1)',
-        border: '1px solid rgba(59, 130, 246, 0.3)',
-        borderRadius: '12px',
-        color: '#3b82f6'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
-          <span style={{ fontSize: '1.5rem' }}>ℹ️</span>
-          <span style={{ fontWeight: '600', fontSize: '1.125rem' }}>Smart Account Required</span>
-        </div>
-        <p style={{ margin: 0, fontSize: '0.875rem', lineHeight: '1.5' }}>
-          To use transfer features, you need to deploy your Smart Account first. 
-          Go to the <strong>Deploy</strong> page to set up your Smart Account for gasless transactions.
-        </p>
-      </div>
 
       {/* Tabs */}
       <div style={{

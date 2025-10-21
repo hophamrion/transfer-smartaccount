@@ -12,12 +12,14 @@ export default function Home() {
       <section style={{
         position: 'relative',
         borderRadius: '24px',
-        padding: '4rem 3rem',
+        padding: '3rem 2rem',
         color: 'var(--text-primary)',
         marginBottom: '3rem',
         textAlign: 'center',
         background: 'var(--bg-secondary)',
-        border: '1px solid var(--border-color)'
+        border: '1px solid var(--border-color)',
+        maxWidth: '1200px',
+        margin: '0 auto 3rem auto'
       }}>
         <div style={{
           position: 'absolute', inset: 0, borderRadius: '24px', pointerEvents: 'none',
@@ -83,27 +85,34 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.25rem', marginBottom: '3rem' }}>
+      <section style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+        gap: '1.5rem', 
+        marginBottom: '2.5rem',
+        maxWidth: '1200px',
+        margin: '0 auto 2.5rem auto'
+      }}>
         {[
           { label: 'Transfer Type', value: 'Multi-Token', color: '#8b5cf6' },
           { label: 'Speed', value: 'Instant', color: '#3b82f6' },
           { label: 'Security', value: 'ERC-4337', color: '#06b6d4' },
           { label: 'Batch Support', value: 'Yes', color: '#10b981' },
         ].map((stat) => (
-          <div key={stat.label} className="card" style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.25rem', color: stat.color }}>{stat.value}</div>
-            <div style={{ fontSize: '0.95rem', color: 'var(--text-secondary)' }}>{stat.label}</div>
+          <div key={stat.label} className="card" style={{ textAlign: 'center', padding: '1.5rem 1.25rem' }}>
+            <div style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: '0.5rem', color: stat.color }}>{stat.value}</div>
+            <div style={{ fontSize: '1rem', color: 'var(--text-secondary)' }}>{stat.label}</div>
           </div>
         ))}
       </section>
 
       {/* Features Section */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section style={{ marginBottom: '2.5rem' }}>
         <h2 style={{
-          fontSize: '2.5rem',
+          fontSize: '2.25rem',
           fontWeight: '700',
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: '2.5rem',
           color: 'var(--text-primary)',
         }}>
           How It Works
@@ -111,8 +120,10 @@ export default function Home() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '2rem',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '1.5rem',
+          maxWidth: '1200px',
+          margin: '0 auto',
         }}>
           {[
             {
@@ -128,7 +139,7 @@ export default function Home() {
             {
               step: '3',
               title: 'Enter Details',
-              description: 'Enter recipient address and amount. Save addresses to your address book for quick access.',
+              description: 'Enter recipient address and amount. Use batch transfer for multiple recipients.',
             },
             {
               step: '4',
@@ -174,12 +185,12 @@ export default function Home() {
       </section>
 
       {/* Advanced Features */}
-      <section style={{ marginBottom: '3rem' }}>
+      <section style={{ marginBottom: '2.5rem' }}>
         <h2 style={{
-          fontSize: '2.5rem',
+          fontSize: '2.25rem',
           fontWeight: '700',
           textAlign: 'center',
-          marginBottom: '3rem',
+          marginBottom: '2.5rem',
           color: 'var(--text-primary)',
         }}>
           Advanced Features
@@ -187,8 +198,10 @@ export default function Home() {
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
           gap: '2rem',
+          maxWidth: '900px',
+          margin: '0 auto',
         }}>
           <div className="card">
             <h3 style={{ 
@@ -202,21 +215,6 @@ export default function Home() {
             </h3>
             <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
               Send tokens to multiple recipients in a single transaction. Save gas and time with batch operations. Import from CSV for convenience.
-            </p>
-          </div>
-
-          <div className="card">
-            <h3 style={{ 
-              fontSize: '1.5rem', 
-              fontWeight: '600', 
-              color: 'var(--text-primary)',
-              marginBottom: '0.75rem',
-              marginTop: 0,
-            }}>
-              Address Book
-            </h3>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', lineHeight: '1.6', margin: 0 }}>
-              Save frequently used addresses with labels and notes. Quick access for repeated transfers. All stored locally in your browser.
             </p>
           </div>
 

@@ -76,18 +76,18 @@ export default function FundSmartAccount() {
 
   return (
     <div className="card">
-      <div className="flex items-center mb-6">
-        <div className="w-10 h-10 rounded-lg mr-4" style={{background: 'linear-gradient(135deg, #22c55e, #10b981)'}}></div>
+      <div className="flex items-center mb-4">
+        <div className="w-8 h-8 rounded-lg mr-3" style={{background: 'linear-gradient(135deg, #22c55e, #10b981)'}}></div>
         <div>
-          <h3 className="text-xl font-bold" style={{color: 'var(--text-primary)'}}>Fund Smart Account</h3>
-          <p className="text-sm" style={{color: 'var(--text-secondary)'}}>Add MON to pay for gas fees</p>
+          <h3 className="text-lg font-bold" style={{color: 'var(--text-primary)'}}>Fund Smart Account</h3>
+          <p className="text-xs" style={{color: 'var(--text-secondary)'}}>Add MON to pay for gas fees</p>
         </div>
       </div>
 
-      <div className="space-y-6">
-        <div className="rounded-xl p-4" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold" style={{color: 'var(--text-primary)'}}>Smart Account Balance</span>
+      <div className="space-y-4">
+        <div className="rounded-lg p-3" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>Smart Account Balance</span>
             <button
               onClick={checkBalance}
               className="text-xs font-medium"
@@ -96,13 +96,13 @@ export default function FundSmartAccount() {
               Refresh
             </button>
           </div>
-          <p className="text-2xl font-bold" style={{color: 'var(--text-primary)'}}>
+          <p className="text-lg font-bold" style={{color: 'var(--text-primary)'}}>
             {balance !== null ? `${formatEther(balance)} MON` : 'Click refresh'}
           </p>
         </div>
 
         <div>
-          <label className="block text-sm font-semibold mb-2" style={{color: 'var(--text-primary)'}}>
+          <label className="block text-xs font-semibold mb-1" style={{color: 'var(--text-primary)'}}>
             Amount to Send (MON)
           </label>
           <input
@@ -111,11 +111,11 @@ export default function FundSmartAccount() {
             onChange={(e) => setAmount(e.target.value)}
             step="0.1"
             min="0"
-            className="w-full px-4 py-3 rounded-xl focus:outline-none"
+            className="w-full px-3 py-2 rounded-lg focus:outline-none"
             style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)'}}
             placeholder="0.1"
           />
-          <p className="text-xs mt-2" style={{color: 'var(--text-secondary)'}}>
+          <p className="text-xs mt-1" style={{color: 'var(--text-secondary)'}}>
             Recommended: 0.1 MON for gas fees
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function FundSmartAccount() {
         <button
           onClick={handleFund}
           disabled={isSending || !amount || parseFloat(amount) <= 0}
-          className={`w-full font-semibold py-3 px-6 rounded-xl transition-all duration-200 ${
+          className={`w-full font-semibold py-2 px-4 rounded-lg transition-all duration-200 ${
             isSending || !amount || parseFloat(amount) <= 0
               ? 'bg-gray-600 cursor-not-allowed text-gray-400'
               : 'btn-primary'
@@ -134,14 +134,14 @@ export default function FundSmartAccount() {
       </div>
 
       {txHash && (
-        <div className="mt-6 p-4 rounded-xl" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
-          <p className="text-sm font-semibold" style={{color: 'var(--text-primary)'}}>Transfer Successful!</p>
-          <p className="text-xs mb-2" style={{color: 'var(--text-secondary)'}}>Transaction Hash:</p>
+        <div className="mt-4 p-3 rounded-lg" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+          <p className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>Transfer Successful!</p>
+          <p className="text-xs mb-1" style={{color: 'var(--text-secondary)'}}>Transaction Hash:</p>
           <a
             href={`https://testnet-explorer.monad.xyz/tx/${txHash}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs p-2 rounded-lg break-all block"
+            className="font-mono text-xs p-2 rounded break-all block"
             style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: '#93c5fd'}}
           >
             {txHash}

@@ -112,46 +112,46 @@ export default function SmartAccountDeploy() {
 
   return (
     <div className="card">
-      <div className="flex items-center mb-6">
-        <div className="w-10 h-10 rounded-lg mr-4" style={{background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)'}}>
+      <div className="flex items-center mb-4">
+        <div className="w-8 h-8 rounded-lg mr-3" style={{background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)'}}>
         </div>
         <div>
-          <h3 className="text-xl font-bold" style={{color: 'var(--text-primary)'}}>Smart Account</h3>
-          <p className="text-sm" style={{color: 'var(--text-secondary)'}}>Deploy and manage your Smart Account</p>
+          <h3 className="text-lg font-bold" style={{color: 'var(--text-primary)'}}>Smart Account</h3>
+          <p className="text-xs" style={{color: 'var(--text-secondary)'}}>Deploy and manage your Smart Account</p>
         </div>
       </div>
       
-      <div className="space-y-6 mb-8">
-        <div className="rounded-xl p-4" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-gray-700">Address</span>
-            <span className="text-xs text-gray-500">Deterministic</span>
+      <div className="space-y-4 mb-6">
+        <div className="rounded-lg p-3" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs font-semibold" style={{color: 'var(--text-secondary)'}}>Address</span>
+            <span className="text-xs" style={{color: 'var(--text-secondary)'}}>Deterministic</span>
           </div>
-          <p className="font-mono text-sm p-3 rounded-lg break-all" style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)'}}>
+          <p className="font-mono text-xs p-2 rounded break-all" style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)'}}>
             {smartAccount.address}
           </p>
         </div>
         
-        <div className="flex items-center justify-between p-4 rounded-xl" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+        <div className="flex items-center justify-between p-3 rounded-lg" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
           <div className="flex items-center">
-            <div className={`w-3 h-3 rounded-full mr-3 ${
+            <div className={`w-2 h-2 rounded-full mr-2 ${
               isChecking ? 'bg-blue-400 animate-pulse' : 
               isDeployed ? 'bg-green-400' : 'bg-yellow-400'
             }`}></div>
-            <span className="text-sm font-semibold" style={{color: 'var(--text-primary)'}}>Status</span>
+            <span className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>Status</span>
           </div>
-          <span className="px-3 py-1 rounded-full text-sm font-medium" style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)'}}>
+          <span className="px-2 py-1 rounded-full text-xs font-medium" style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: 'var(--text-primary)'}}>
             {isChecking ? 'Checking...' : isDeployed ? 'Deployed' : 'Not Deployed'}
           </span>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {!isDeployed && (
           <button
             onClick={handleTryAutomaticDeployment}
             disabled={isDeploying || isChecking}
-            className={`w-full font-semibold py-3 px-6 rounded-xl transition-all duration-200 ${
+            className={`w-full font-semibold py-2 px-4 rounded-lg transition-all duration-200 ${
               isDeploying || isChecking
                 ? 'bg-gray-600 cursor-not-allowed text-gray-400'
                 : 'btn-primary'
@@ -164,7 +164,7 @@ export default function SmartAccountDeploy() {
         <button
           onClick={handleCheckSmartAccountStatus}
           disabled={isChecking}
-          className={`w-full font-semibold py-3 px-6 rounded-xl transition-all duration-200 ${
+          className={`w-full font-semibold py-2 px-4 rounded-lg transition-all duration-200 ${
             isChecking ? 'bg-gray-600 cursor-not-allowed text-gray-400' : 'btn-secondary'
           }`}
         >
@@ -173,16 +173,16 @@ export default function SmartAccountDeploy() {
       </div>
 
       {deployTx && (
-        <div className="mt-6 p-4 rounded-xl" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
-          <div className="flex items-center mb-2">
-            <p className="text-sm font-semibold" style={{color: 'var(--text-primary)'}}>Deployed Successfully!</p>
+        <div className="mt-4 p-3 rounded-lg" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+          <div className="flex items-center mb-1">
+            <p className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>Deployed Successfully!</p>
           </div>
-          <p className="text-xs mb-2" style={{color: 'var(--text-secondary)'}}>Transaction Hash:</p>
+          <p className="text-xs mb-1" style={{color: 'var(--text-secondary)'}}>Transaction Hash:</p>
           <a
             href={`https://testnet-explorer.monad.xyz/tx/${deployTx}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-xs p-2 rounded-lg break-all block"
+            className="font-mono text-xs p-2 rounded break-all block"
             style={{background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', color: '#93c5fd'}}
           >
             {deployTx}
@@ -190,10 +190,9 @@ export default function SmartAccountDeploy() {
         </div>
       )}
 
-
       {isDeployed && (
-        <div className="mt-6 p-4 rounded-xl" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
-          <p className="text-sm font-semibold" style={{color: 'var(--text-primary)'}}>
+        <div className="mt-4 p-3 rounded-lg" style={{background: 'var(--bg-tertiary)', border: '1px solid var(--border-color)'}}>
+          <p className="text-xs font-semibold" style={{color: 'var(--text-primary)'}}>
             Smart Account is ready.
           </p>
         </div>

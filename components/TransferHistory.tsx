@@ -25,8 +25,8 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Default Envio API URL
-  const defaultApiUrl = envioApiUrl || process.env.NEXT_PUBLIC_ENVIO_API_URL || "YOUR_PLAYGROUND_URL_HERE";
+  // Default Envio API URL - UPDATED with correct endpoint
+  const defaultApiUrl = "https://indexer.dev.hyperindex.xyz/2466180/v1/graphql";
 
   useEffect(() => {
     const fetchTransferHistory = async () => {
@@ -42,43 +42,29 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
         console.log('🌐 Using Envio API URL:', defaultApiUrl);
         console.log('👤 Querying transfers for user:', userAddress);
 
-        // GraphQL query for transfer events
+        // GraphQL query for transfer events from Envio
+        // Using exact query that works in playground
         const query = `
-          query UserTransferHistory($user: String!, $userLower: String!) {
-            Transfer_Sent: Transfer(
-              where: { 
-                _or: [
-                  { from: { _eq: $user } },
-                  { from: { _eq: $userLower } }
-                ]
-              }
-              order_by: { timestamp: desc }
-              limit: 50
-            ) {
+          query AllTransferEvents {
+            Smart_TransferExecuted {
               id
-              from
+              smartAccount
               to
               value
+              transferType
+              tokenAddress
               timestamp
-              transactionHash
+              userOpHash
             }
-            
-            Transfer_Received: Transfer(
-              where: { 
-                _or: [
-                  { to: { _eq: $user } },
-                  { to: { _eq: $userLower } }
-                ]
-              }
-              order_by: { timestamp: desc }
-              limit: 50
-            ) {
+            Smart_BatchTransferExecuted {
               id
-              from
-              to
-              value
+              smartAccount
+              recipientCount
+              totalValue
+              transferType
+              tokenAddress
               timestamp
-              transactionHash
+              userOpHash
             }
           }
         `;
@@ -89,11 +75,7 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            query,
-            variables: { 
-              user: userAddress,
-              userLower: userAddress.toLowerCase()
-            }
+            query
           })
         });
 
@@ -107,8 +89,50 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
           throw new Error(data.errors[0].message);
         }
 
-        const sent = data.data.Transfer_Sent || [];
-        const received = data.data.Transfer_Received || [];
+        const transfers = data.data?.Smart_TransferExecuted || [];
+        const batchTransfers = data.data?.Smart_BatchTransferExecuted || [];
+        
+        console.log('📊 Raw data from Envio:', { transfers, batchTransfers });
+        
+        // Filter on client side
+        const sent = transfers
+          .filter((t: any) => t.smartAccount?.toLowerCase() === userAddress?.toLowerCase())
+          .map((t: any) => ({
+            id: t.id,
+            from: t.smartAccount,
+            to: t.to,
+            value: t.value,
+            timestamp: t.timestamp,
+            transactionHash: t.userOpHash
+          }));
+        
+        const received = transfers
+          .filter((t: any) => 
+            t.to?.toLowerCase() === userAddress?.toLowerCase() && 
+            t.smartAccount?.toLowerCase() !== userAddress?.toLowerCase()
+          )
+          .map((t: any) => ({
+            id: t.id,
+            from: t.smartAccount,
+            to: t.to,
+            value: t.value,
+            timestamp: t.timestamp,
+            transactionHash: t.userOpHash
+          }));
+        
+        // Add batch transfers to sent (only from user's smart account)
+        batchTransfers
+          .filter((bt: any) => bt.smartAccount?.toLowerCase() === userAddress?.toLowerCase())
+          .forEach((bt: any) => {
+            sent.push({
+              id: bt.id,
+              from: bt.smartAccount,
+              to: `${bt.recipientCount} recipients`,
+              value: bt.totalValue,
+              timestamp: bt.timestamp,
+              transactionHash: bt.userOpHash
+            });
+          });
         
         console.log('🔍 Envio API Response:', data.data);
         console.log('📤 Sent Transfers:', sent);
@@ -157,27 +181,26 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
 
   if (loading) {
     return (
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '2.5rem',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
-          border: '1px solid rgba(139, 92, 246, 0.1)',
+          background: 'var(--bg-secondary)',
+          borderRadius: '12px',
+          padding: '1.5rem',
+          border: '1px solid var(--border-color)',
           textAlign: 'center'
         }}>
           <div style={{
-            width: '40px',
-            height: '40px',
-            border: '3px solid rgba(139, 92, 246, 0.2)',
-            borderTop: '3px solid #8B5CF6',
+            width: '24px',
+            height: '24px',
+            border: '2px solid var(--border-color)',
+            borderTop: '2px solid var(--accent-purple)',
             borderRadius: '50%',
             animation: 'spin 1s linear infinite',
-            margin: '0 auto 1.5rem auto'
+            margin: '0 auto 1rem auto'
           }}></div>
           <p style={{ 
-            color: '#6b7280', 
-            fontSize: '1.1rem',
+            color: 'var(--text-secondary)', 
+            fontSize: '0.9rem',
             margin: 0
           }}>
             Loading transfer history...
@@ -189,18 +212,17 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
 
   if (error) {
     return (
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '2.5rem',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
-          border: '1px solid rgba(239, 68, 68, 0.1)',
+          background: 'var(--bg-secondary)',
+          borderRadius: '12px',
+          padding: '1.5rem',
+          border: '1px solid #dc2626',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+          <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>⚠️</div>
           <h3 style={{ 
-            fontSize: '1.25rem', 
+            fontSize: '1rem', 
             fontWeight: 'bold', 
             color: '#dc2626', 
             marginBottom: '0.5rem' 
@@ -208,8 +230,8 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             Failed to Load History
           </h3>
           <p style={{ 
-            color: '#6b7280', 
-            fontSize: '1rem',
+            color: 'var(--text-secondary)', 
+            fontSize: '0.85rem',
             margin: 0
           }}>
             {error}
@@ -232,37 +254,36 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
 
   if (allTransfers.length === 0) {
     return (
-      <div style={{ marginBottom: '2rem' }}>
+      <div style={{ marginBottom: '1.5rem' }}>
         <div style={{
-          background: 'white',
-          borderRadius: '20px',
-          padding: '2.5rem',
-          boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
-          border: '1px solid rgba(139, 92, 246, 0.1)',
+          background: 'var(--bg-secondary)',
+          borderRadius: '12px',
+          padding: '1.5rem',
+          border: '1px solid var(--border-color)',
           textAlign: 'center'
         }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📊</div>
+          <div style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>📊</div>
           <h3 style={{ 
-            fontSize: '1.25rem', 
+            fontSize: '1rem', 
             fontWeight: 'bold', 
-            color: '#1f2937', 
+            color: 'var(--text-primary)', 
             marginBottom: '0.5rem' 
           }}>
             No Transfer History
           </h3>
           <p style={{ 
-            color: '#6b7280', 
-            fontSize: '1rem',
-            margin: '0 0 1rem 0'
+            color: 'var(--text-secondary)', 
+            fontSize: '0.85rem',
+            margin: '0 0 0.75rem 0'
           }}>
             Envio indexer is running but no transfers found for this address
           </p>
           <div style={{
-            background: 'rgba(139, 92, 246, 0.1)',
-            padding: '1rem',
-            borderRadius: '8px',
-            fontSize: '0.875rem',
-            color: '#6b7280'
+            background: 'var(--bg-tertiary)',
+            padding: '0.75rem',
+            borderRadius: '6px',
+            fontSize: '0.75rem',
+            color: 'var(--text-secondary)'
           }}>
             <strong>Debug Info:</strong><br/>
             API URL: {defaultApiUrl}<br/>
@@ -275,30 +296,31 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
   }
 
   return (
-    <div style={{ marginBottom: '2rem' }}>
+    <div style={{ marginBottom: '1.5rem' }}>
       <div style={{
-        background: 'white',
-        borderRadius: '20px',
-        padding: '2.5rem',
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.1)',
-        border: '1px solid rgba(139, 92, 246, 0.1)'
+        background: 'var(--bg-secondary)',
+        borderRadius: '12px',
+        padding: '1.5rem',
+        border: '1px solid var(--border-color)',
+        maxWidth: '1200px',
+        margin: '0 auto'
       }}>
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '1.5rem' }}>
           <h3 style={{ 
-            fontSize: '1.75rem', 
+            fontSize: '1.25rem', 
             fontWeight: 'bold', 
-            color: '#1f2937', 
-            marginBottom: '0.5rem',
+            color: 'var(--text-primary)', 
+            marginBottom: '0.25rem',
             display: 'flex',
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <span style={{ fontSize: '1.5rem' }}>📈</span>
+            <span style={{ fontSize: '1rem' }}>📈</span>
             Transfer History
           </h3>
           <p style={{ 
-            color: '#6b7280', 
-            fontSize: '1rem',
+            color: 'var(--text-secondary)', 
+            fontSize: '0.85rem',
             margin: 0
           }}>
             Your recent transfers and transactions
@@ -308,58 +330,58 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
         {/* Aggregate Stats */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '1rem',
-          marginBottom: '2rem'
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '0.75rem',
+          marginBottom: '1.5rem'
         }}>
           <div style={{
-            padding: '1.5rem',
-            background: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
-            borderRadius: '12px',
-            border: '1px solid #fecaca'
+            padding: '1rem',
+            background: 'var(--bg-tertiary)',
+            borderRadius: '8px',
+            border: '1px solid #dc2626'
           }}>
-            <div style={{ fontSize: '0.875rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.25rem' }}>
               📤 Total Sent
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#991b1b' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#dc2626' }}>
               {formatEther(BigInt(totalSent))} MON
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#dc2626', marginTop: '0.25rem' }}>
-              {sentTransfers.length} transaction{sentTransfers.length !== 1 ? 's' : ''}
+            <div style={{ fontSize: '0.7rem', color: '#dc2626', marginTop: '0.25rem' }}>
+              {sentTransfers.length} tx{sentTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
 
           <div style={{
-            padding: '1.5rem',
-            background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-            borderRadius: '12px',
-            border: '1px solid #bbf7d0'
+            padding: '1rem',
+            background: 'var(--bg-tertiary)',
+            borderRadius: '8px',
+            border: '1px solid #16a34a'
           }}>
-            <div style={{ fontSize: '0.875rem', color: '#16a34a', fontWeight: '600', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: '600', marginBottom: '0.25rem' }}>
               📥 Total Received
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#14532d' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#16a34a' }}>
               {formatEther(BigInt(totalReceived))} MON
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#16a34a', marginTop: '0.25rem' }}>
-              {receivedTransfers.length} transaction{receivedTransfers.length !== 1 ? 's' : ''}
+            <div style={{ fontSize: '0.7rem', color: '#16a34a', marginTop: '0.25rem' }}>
+              {receivedTransfers.length} tx{receivedTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
 
           <div style={{
-            padding: '1.5rem',
-            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
-            borderRadius: '12px',
-            border: '1px solid #bae6fd'
+            padding: '1rem',
+            background: 'var(--bg-tertiary)',
+            borderRadius: '8px',
+            border: '1px solid var(--accent-blue)'
           }}>
-            <div style={{ fontSize: '0.875rem', color: '#0369a1', fontWeight: '600', marginBottom: '0.5rem' }}>
+            <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: '600', marginBottom: '0.25rem' }}>
               💰 Net Balance
             </div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#0c4a6e' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--accent-blue)' }}>
               {formatEther(BigInt(totalReceived) - BigInt(totalSent))} MON
             </div>
-            <div style={{ fontSize: '0.75rem', color: '#0369a1', marginTop: '0.25rem' }}>
-              {allTransfers.length} total transaction{allTransfers.length !== 1 ? 's' : ''}
+            <div style={{ fontSize: '0.7rem', color: 'var(--accent-blue)', marginTop: '0.25rem' }}>
+              {allTransfers.length} total tx{allTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
         </div>
@@ -368,7 +390,7 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
         <div style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          gap: '1rem' 
+          gap: '0.75rem' 
         }}>
           {allTransfers.map((transfer) => {
             const isSent = transfer.from.toLowerCase() === userAddress.toLowerCase();
@@ -377,19 +399,17 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
               <div
                 key={transfer.id}
                 style={{
-                  padding: '1.5rem',
-                  background: isSent
-                    ? 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)'
-                    : 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-                  borderRadius: '12px',
+                  padding: '1rem',
+                  background: 'var(--bg-tertiary)',
+                  borderRadius: '8px',
                   border: isSent
-                    ? '1px solid #fecaca'
-                    : '1px solid #bbf7d0',
+                    ? '1px solid #dc2626'
+                    : '1px solid #16a34a',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.1)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
@@ -401,20 +421,20 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                   justifyContent: 'space-between', 
                   alignItems: 'flex-start',
                   flexWrap: 'wrap',
-                  gap: '1rem'
+                  gap: '0.75rem'
                 }}>
-                  <div style={{ flex: 1, minWidth: '200px' }}>
+                  <div style={{ flex: 1, minWidth: '180px' }}>
                     <div style={{ 
                       display: 'flex', 
                       alignItems: 'center', 
                       gap: '0.5rem',
-                      marginBottom: '0.5rem'
+                      marginBottom: '0.25rem'
                     }}>
-                      <span style={{ fontSize: '1.25rem' }}>
+                      <span style={{ fontSize: '0.9rem' }}>
                         {isSent ? '📤' : '📥'}
                       </span>
                       <span style={{ 
-                        fontSize: '1.1rem', 
+                        fontSize: '0.85rem', 
                         fontWeight: 'bold',
                         color: isSent ? '#dc2626' : '#16a34a'
                       }}>
@@ -423,17 +443,17 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                     </div>
                     
                     <div style={{ 
-                      fontSize: '1.5rem', 
+                      fontSize: '1.1rem', 
                       fontWeight: 'bold',
                       color: isSent ? '#dc2626' : '#16a34a',
-                      marginBottom: '0.5rem'
+                      marginBottom: '0.25rem'
                     }}>
                       {formatEther(BigInt(transfer.value))} MON
                     </div>
                     
                     <div style={{ 
-                      fontSize: '0.875rem', 
-                      color: '#6b7280',
+                      fontSize: '0.75rem', 
+                      color: 'var(--text-secondary)',
                       marginBottom: '0.25rem'
                     }}>
                       {isSent ? 'To' : 'From'}: <span style={{ fontFamily: 'monospace', fontWeight: '500' }}>
@@ -442,8 +462,8 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                     </div>
                     
                     <div style={{ 
-                      fontSize: '0.875rem', 
-                      color: '#6b7280'
+                      fontSize: '0.75rem', 
+                      color: 'var(--text-secondary)'
                     }}>
                       {formatDate(transfer.timestamp)}
                     </div>
@@ -453,40 +473,43 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                     display: 'flex', 
                     flexDirection: 'column', 
                     alignItems: 'flex-end',
-                    gap: '0.5rem'
+                    gap: '0.25rem'
                   }}>
                     <a
                       href={getExplorerUrl(transfer.transactionHash)}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        padding: '0.5rem 1rem',
-                        background: 'rgba(139, 92, 246, 0.1)',
-                        color: '#8B5CF6',
+                        padding: '0.4rem 0.75rem',
+                        background: 'var(--bg-primary)',
+                        color: 'var(--accent-purple)',
                         textDecoration: 'none',
-                        borderRadius: '8px',
-                        fontSize: '0.875rem',
+                        borderRadius: '6px',
+                        fontSize: '0.75rem',
                         fontWeight: '600',
                         transition: 'all 0.2s ease',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '0.25rem'
+                        gap: '0.25rem',
+                        border: '1px solid var(--accent-purple)'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(139, 92, 246, 0.2)';
+                        e.currentTarget.style.background = 'var(--accent-purple)';
+                        e.currentTarget.style.color = 'white';
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(139, 92, 246, 0.1)';
+                        e.currentTarget.style.background = 'var(--bg-primary)';
+                        e.currentTarget.style.color = 'var(--accent-purple)';
                       }}
                     >
                       <span>🔗</span>
-                      View on Explorer
+                      Explorer
                     </a>
                     
                     {transfer.transactionHash && (
                       <div style={{ 
-                        fontSize: '0.75rem', 
-                        color: '#9ca3af',
+                        fontSize: '0.65rem', 
+                        color: 'var(--text-secondary)',
                         fontFamily: 'monospace'
                       }}>
                         Tx: {transfer.transactionHash.slice(0, 8)}...

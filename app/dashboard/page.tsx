@@ -38,48 +38,6 @@ export default function Dashboard() {
 
   return (
     <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 1rem' }}>
-      {/* Header Section */}
-      <div style={{ 
-        textAlign: 'center', 
-        marginBottom: '3rem',
-        padding: '2rem 0'
-      }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '80px',
-          height: '80px',
-          background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)',
-          borderRadius: '20px',
-          marginBottom: '1.5rem',
-          boxShadow: '0 10px 30px rgba(139, 92, 246, 0.3)'
-        }}>
-          <span style={{ fontSize: '2.5rem' }}>📊</span>
-        </div>
-        <h1 style={{ 
-          fontSize: '3rem', 
-          fontWeight: '800', 
-          margin: '0 0 1rem 0',
-          background: 'linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text'
-        }}>
-          Envio Dashboard
-        </h1>
-        <p style={{ 
-          fontSize: '1.25rem', 
-          color: '#6b7280', 
-          margin: 0,
-          maxWidth: '600px',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          lineHeight: '1.6'
-        }}>
-          Monitor your token transfers and balances in real-time with Envio indexing
-        </p>
-      </div>
 
       {!account ? (
         <div style={{ marginBottom: '2rem' }}>

@@ -75,7 +75,16 @@ export default function FundSmartAccount() {
   }
 
   return (
-    <div className="card">
+    <div style={{
+      background: 'rgba(30, 41, 59, 0.4)',
+      backdropFilter: 'blur(10px)',
+      borderRadius: '16px',
+      padding: '2rem',
+      border: '1px solid rgba(71, 85, 105, 0.3)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+      position: 'relative',
+      overflow: 'hidden'
+    }}>
       <div className="flex items-center mb-4">
         <div className="w-8 h-8 rounded-lg mr-3" style={{background: 'linear-gradient(135deg, #22c55e, #10b981)'}}></div>
         <div>

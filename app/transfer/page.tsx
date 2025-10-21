@@ -13,11 +13,25 @@ export default function TransferPage() {
 
   if (!account) {
     return (
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem' }}>
-        <div className="card" style={{
-          padding: '3rem',
-          textAlign: 'center',
-        }}>
+      <div className="min-h-screen w-full bg-[#020617] relative">
+        {/* Magenta Orb Grid Background */}
+        <div
+          className="absolute inset-0 z-0"
+          style={{
+            background: "#020617",
+            backgroundImage: `
+              linear-gradient(to right, rgba(71,85,105,0.15) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(71,85,105,0.15) 1px, transparent 1px),
+              radial-gradient(circle at 50% 60%, rgba(236,72,153,0.15) 0%, rgba(168,85,247,0.05) 40%, transparent 70%)
+            `,
+            backgroundSize: "40px 40px, 40px 40px, 100% 100%",
+          }}
+        />
+        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
+          <div className="card" style={{
+            padding: '3rem',
+            textAlign: 'center',
+          }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem', color: '#8b5cf6' }}>
             <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: '0 auto' }}>
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="currentColor"/>
@@ -29,13 +43,28 @@ export default function TransferPage() {
           <p style={{ fontSize: '1.125rem', color: 'var(--text-secondary)', marginBottom: '0' }}>
             Please connect your MetaMask wallet to access transfer features
           </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem' }}>
+    <div className="min-h-screen w-full bg-[#020617] relative">
+      {/* Magenta Orb Grid Background */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background: "#020617",
+          backgroundImage: `
+            linear-gradient(to right, rgba(71,85,105,0.15) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(71,85,105,0.15) 1px, transparent 1px),
+            radial-gradient(circle at 50% 60%, rgba(236,72,153,0.15) 0%, rgba(168,85,247,0.05) 40%, transparent 70%)
+          `,
+          backgroundSize: "40px 40px, 40px 40px, 100% 100%",
+        }}
+      />
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', position: 'relative', zIndex: 1 }}>
       {/* Header */}
       <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
         <h1 style={{ 
@@ -102,6 +131,7 @@ export default function TransferPage() {
       <div>
         {activeTab === 'transfer' && <TransferForm />}
         {activeTab === 'batch' && <BatchTransfer />}
+      </div>
       </div>
     </div>
   );

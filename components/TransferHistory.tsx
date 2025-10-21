@@ -172,12 +172,6 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const getExplorerUrl = (txHash?: string) => {
-    if (txHash) {
-      return `https://testnet.monadexplorer.com/tx/${txHash}`;
-    }
-    return `https://testnet.monadexplorer.com/address/${userAddress}`;
-  };
 
   if (loading) {
     return (
@@ -315,7 +309,7 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             alignItems: 'center',
             gap: '0.5rem'
           }}>
-            <span style={{ fontSize: '1rem' }}>📈</span>
+            <span style={{ fontSize: '1rem' }}></span>
             Transfer History
           </h3>
           <p style={{ 
@@ -338,15 +332,15 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             padding: '1rem',
             background: 'var(--bg-tertiary)',
             borderRadius: '8px',
-            border: '1px solid #dc2626'
+            border: '1px solid rgba(156, 163, 175, 0.3)'
           }}>
-            <div style={{ fontSize: '0.75rem', color: '#dc2626', fontWeight: '600', marginBottom: '0.25rem' }}>
-              📤 Total Sent
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600', marginBottom: '0.25rem' }}>
+               Total Sent
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#dc2626' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
               {formatEther(BigInt(totalSent))} MON
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#dc2626', marginTop: '0.25rem' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
               {sentTransfers.length} tx{sentTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
@@ -355,15 +349,15 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             padding: '1rem',
             background: 'var(--bg-tertiary)',
             borderRadius: '8px',
-            border: '1px solid #16a34a'
+            border: '1px solid rgba(156, 163, 175, 0.3)'
           }}>
-            <div style={{ fontSize: '0.75rem', color: '#16a34a', fontWeight: '600', marginBottom: '0.25rem' }}>
-              📥 Total Received
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600', marginBottom: '0.25rem' }}>
+               Total Received
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#16a34a' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
               {formatEther(BigInt(totalReceived))} MON
             </div>
-            <div style={{ fontSize: '0.7rem', color: '#16a34a', marginTop: '0.25rem' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
               {receivedTransfers.length} tx{receivedTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
@@ -372,15 +366,15 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
             padding: '1rem',
             background: 'var(--bg-tertiary)',
             borderRadius: '8px',
-            border: '1px solid var(--accent-blue)'
+            border: '1px solid rgba(156, 163, 175, 0.3)'
           }}>
-            <div style={{ fontSize: '0.75rem', color: 'var(--accent-blue)', fontWeight: '600', marginBottom: '0.25rem' }}>
-              💰 Net Balance
+            <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600', marginBottom: '0.25rem' }}>
+               Net Balance
             </div>
-            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--accent-blue)' }}>
+            <div style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
               {formatEther(BigInt(totalReceived) - BigInt(totalSent))} MON
             </div>
-            <div style={{ fontSize: '0.7rem', color: 'var(--accent-blue)', marginTop: '0.25rem' }}>
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>
               {allTransfers.length} total tx{allTransfers.length !== 1 ? 's' : ''}
             </div>
           </div>
@@ -402,9 +396,7 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                   padding: '1rem',
                   background: 'var(--bg-tertiary)',
                   borderRadius: '8px',
-                  border: isSent
-                    ? '1px solid #dc2626'
-                    : '1px solid #16a34a',
+                  border: '1px solid rgba(156, 163, 175, 0.3)',
                   transition: 'transform 0.2s ease, box-shadow 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
@@ -431,12 +423,12 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                       marginBottom: '0.25rem'
                     }}>
                       <span style={{ fontSize: '0.9rem' }}>
-                        {isSent ? '📤' : '📥'}
+                        {isSent ? '' : ''}
                       </span>
                       <span style={{ 
                         fontSize: '0.85rem', 
                         fontWeight: 'bold',
-                        color: isSent ? '#dc2626' : '#16a34a'
+                        color: 'var(--text-primary)'
                       }}>
                         {isSent ? 'Sent' : 'Received'}
                       </span>
@@ -445,7 +437,7 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                     <div style={{ 
                       fontSize: '1.1rem', 
                       fontWeight: 'bold',
-                      color: isSent ? '#dc2626' : '#16a34a',
+                      color: 'var(--text-primary)',
                       marginBottom: '0.25rem'
                     }}>
                       {formatEther(BigInt(transfer.value))} MON
@@ -469,53 +461,6 @@ export default function TransferHistory({ userAddress, envioApiUrl }: TransferHi
                     </div>
                   </div>
 
-                  <div style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'flex-end',
-                    gap: '0.25rem'
-                  }}>
-                    <a
-                      href={getExplorerUrl(transfer.transactionHash)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        padding: '0.4rem 0.75rem',
-                        background: 'var(--bg-primary)',
-                        color: 'var(--accent-purple)',
-                        textDecoration: 'none',
-                        borderRadius: '6px',
-                        fontSize: '0.75rem',
-                        fontWeight: '600',
-                        transition: 'all 0.2s ease',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.25rem',
-                        border: '1px solid var(--accent-purple)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'var(--accent-purple)';
-                        e.currentTarget.style.color = 'white';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'var(--bg-primary)';
-                        e.currentTarget.style.color = 'var(--accent-purple)';
-                      }}
-                    >
-                      <span>🔗</span>
-                      Explorer
-                    </a>
-                    
-                    {transfer.transactionHash && (
-                      <div style={{ 
-                        fontSize: '0.65rem', 
-                        color: 'var(--text-secondary)',
-                        fontFamily: 'monospace'
-                      }}>
-                        Tx: {transfer.transactionHash.slice(0, 8)}...
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
             );

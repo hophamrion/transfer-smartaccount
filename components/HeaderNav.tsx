@@ -42,7 +42,7 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
         zIndex: 1000,
         overflowY: 'auto',
       }}>
-        {/* Logo */}
+          {/* Logo */}
         <div style={{
           padding: '2rem 1.5rem',
           borderBottom: '1px solid var(--border-color)',
@@ -61,18 +61,42 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
               <div style={{
                 width: '40px',
                 height: '40px',
-                background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
                 borderRadius: '12px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 flexShrink: 0,
+                overflow: 'hidden',
               }}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
-                  <path d="M2 17L12 22L22 17L12 12L2 17Z" fill="white"/>
-                  <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2"/>
-                </svg>
+                <img 
+                  src="/logo.png" 
+                  alt="MON Transfer Logo" 
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'contain',
+                  }}
+                  onError={(e) => {
+                    // Fallback to SVG if logo.png fails to load
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling.style.display = 'flex';
+                  }}
+                />
+                <div style={{
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
+                  borderRadius: '12px',
+                  display: 'none',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
+                    <path d="M2 17L12 22L22 17L12 12L2 17Z" fill="white"/>
+                    <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2"/>
+                  </svg>
+            </div>
               </div>
               <div style={{ overflow: 'hidden' }}>
                 <div style={{
@@ -89,29 +113,53 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                   lineHeight: '1',
                   whiteSpace: 'nowrap',
                 }}>
-                  Monad Testnet
-                </div>
+                Monad Testnet
               </div>
-            </Link>
+            </div>
+          </Link>
           )}
           
           {collapsed && (
             <div style={{
               width: '40px',
               height: '40px',
-              background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
               borderRadius: '12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
+              overflow: 'hidden',
             }}
             onClick={() => setCollapsed(false)}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
-                <path d="M2 17L12 22L22 17L12 12L2 17Z" fill="white"/>
-                <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2"/>
-              </svg>
+              <img 
+                src="/logo.png" 
+                alt="MON Transfer Logo" 
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                }}
+                onError={(e) => {
+                  // Fallback to SVG if logo.png fails to load
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling.style.display = 'flex';
+                }}
+              />
+              <div style={{
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)',
+                borderRadius: '12px',
+                display: 'none',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white"/>
+                  <path d="M2 17L12 22L22 17L12 12L2 17Z" fill="white"/>
+                  <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2"/>
+                </svg>
+              </div>
             </div>
           )}
           
@@ -155,10 +203,10 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
           flexDirection: 'column',
           gap: '0.5rem',
         }}>
-          {links.map((link) => (
-            <Link
+            {links.map((link) => (
+                <Link 
               key={link.href}
-              href={link.href}
+                  href={link.href}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -204,7 +252,7 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                 )}
               </svg>
               {!collapsed && <span>{link.label}</span>}
-            </Link>
+                </Link>
           ))}
         </nav>
 
@@ -213,7 +261,7 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
           padding: '1.5rem 1rem',
           borderTop: '1px solid var(--border-color)',
         }}>
-          {account ? (
+            {account ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {!collapsed && (
                 <div style={{
@@ -231,8 +279,8 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                   {formatAddress(account)}
                 </div>
               )}
-              <button
-                onClick={disconnect}
+                <button
+                  onClick={disconnect}
                 style={{
                   padding: collapsed ? '0.75rem' : '0.75rem 1rem',
                   background: 'transparent',
@@ -263,12 +311,12 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                   <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 {!collapsed && <span>Disconnect</span>}
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={connectHandler}
-              disabled={isConnecting}
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={connectHandler}
+                disabled={isConnecting}
               style={{
                 width: '100%',
                 padding: collapsed ? '0.75rem' : '0.875rem 1rem',
@@ -303,8 +351,8 @@ export default function HeaderNav({ links }: { links: NavLink[] }) {
                 <path d="M12 6V12L16 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               {!collapsed && <span>{isConnecting ? 'Connecting...' : 'Connect'}</span>}
-            </button>
-          )}
+              </button>
+            )}
         </div>
       </aside>
 
